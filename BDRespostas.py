@@ -80,6 +80,20 @@ class BD:
             dataset = self.cursor.execute(selecao, (criterio+'%',)).fetchall()
         return dataset
 
+    def exportarBancoDeDados(self):
+        data = self.listarRespostas("TODAS")
+        wb = Workbook()
+        ws0 = wb.active
+        ws0.title = 'BancoDeDados'
+        conjunto = []
+        for linha in data:
+            conjunto.clear()
+            for coluna in linha:
+                conjunto.append(coluna)
+            ws0.append(conjunto) 
+        arq = '/Users/eduardofelipe/Google Drive/Doutorado-Amanda/Resultados/bancoDeDados.xlsx'
+        wb.save(arq)
+
     def gravarNovoTexto(self, textoTratado, id):
         """[summary]
         

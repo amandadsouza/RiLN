@@ -15,4 +15,5 @@ if __name__ == "__main__":
         #banco.countSiglaForTxt()
 
         #banco.processaBigramas()
-        banco.processaTrigramas() 
+        #banco.processaTrigramas() 
+        banco.exportarBancoDeDados()

@@ -122,10 +122,10 @@ def carregarCIDcomoArray():
         return listaMinuscula
 
 def carregarSiglasComoArray():
-    """[summary]
+    """ Le o arquivo com siglas tecnicas e gera um array em minusculas
 
     Returns:
-        [type] -- [description]
+        list -- Siglas tecnicas em minusculas 
     """    
     lista = open(constantes.ARQ_SIGLAS, 'r').read().splitlines()
     listaMinuscula = [x.lower() for x in lista] 
