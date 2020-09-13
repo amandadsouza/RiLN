@@ -1,5 +1,6 @@
 import sqlite3
 import preProcessamentoTextual as pre
+import processamentoTextual 
 import nltk as nltk 
 from operator import itemgetter
 from collections import OrderedDict
@@ -47,7 +48,7 @@ class BD:
                             """ )
 
     def listarRespostas(self, criterio):
-        """Seleciona os registros da tabela resposta 
+        """ Seleciona os registros da tabela resposta de acordo com criterio
         
         Arguments:
             criterio {str} -- Se devem ser TODAS, ANAMNESE ou EVOLUCAO 
@@ -152,33 +153,36 @@ class BD:
         wb = Workbook() 
         ws1 = wb.active 
         ws1.title = 'quantStopWords'
-        arq = 'QuantidadeStopWords.xlsx'
+        arq = constantes.PATH_RESULTADOS + 'QuantidadeStopWords.xlsx'
         dados = self.listarRespostas('TODAS') 
         for linha in dados:
-            if (linha[8] is not None):
-                novoTexto = pre.cleanText(linha[8]) 
-                resposta  = pre.countStopWords(novoTexto) 
+            if (linha[8] is not None): 
+                novoTexto = pre.limpaTexto(linha[8]) 
+                resposta  = pre.contarStopWords(novoTexto) 
                 if (gravar == 'S'):
                     self.gravarNovoTexto(novoTexto, linha[0])
                     self.gravarQuantStopWords(linha[0], resposta)
                 ws1.append([novoTexto, resposta['stop'], resposta['noStop']]) 
         wb.save(arq)
 
-    def separaStopWords(self, ):
+    def separaStopWords(self):
         """ A partir de um tipo de pesquisa, identifica, separa e conta as stopWords 
             Grava a saida em arquivo excel 
-
-        Args:
-            criterio (str): Se devem ser TODAS, ANAMNESE ou EVOLUCAO 
         """ 
         colecao = {}
         wb = Workbook()
         ws0 = wb.active
         ws0.title = 'stopWords-TODAS'
-        ws1 = wb.create_sheet(title='stopWords-ANAMNESE')
-        ws2 = wb.create_sheet(title='stopWords-EVOLUCAO')
-        arq = 'stopWords-.xlsx'
-        tipoResposta = ['TODAS', 'ANAMNESE', 'EVOLUCAO']
+        ws1 = wb.create_sheet(title='stopWords-ANAMNESE') 
+        ws2 = wb.create_sheet(title='stopWords-EVOLUCAO') 
+        arq = constantes.PATH_RESULTADOS + 'stopWords-.xlsx' 
+        arqTodas = constantes.PATH_RESULTADOS + 'stopWords-ParaNuvem-Todas.txt'
+        strTodas = ''
+        arqAnamnese = constantes.PATH_RESULTADOS + 'stopWords-ParaNuvem-Anamnese.txt'
+        strAnamnese = ''
+        arqEvolucao = constantes.PATH_RESULTADOS + 'stopWords-ParaNuvem-Evolucao.txt'
+        strEvolucao = ''
+        tipoResposta = ['TODAS', 'ANAMNESE', 'EVOLUCAO'] 
         for tipo in tipoResposta:
             tabela = self.listarRespostas(tipo)
             for linha in tabela:
@@ -191,16 +195,23 @@ class BD:
                                 valor = 0
                             colecao[token] = valor + 1
             for item in colecao:
+                quant =  colecao.get(item)
                 if tipoResposta.index(tipo) == 0:
-                    ws0.append([item, colecao.get(item)])
+                    ws0.append([item, quant])
+                    strTodas += ' '+processamentoTextual.repeteString(item, quant)
                 elif tipoResposta.index(tipo) == 1:
-                    ws1.append([item, colecao.get(item)])
+                    ws1.append([item, quant])
+                    strAnamnese += ' '+processamentoTextual.repeteString(item, quant)
                 elif tipoResposta.index(tipo) == 2:
-                    ws2.append([item, colecao.get(item)])
-            print(colecao)
+                    ws2.append([item, quant])
+                    strEvolucao += ' '+processamentoTextual.repeteString(item, quant)
+            
             colecao.clear()
             tabela.clear()
         wb.save(arq)
+        processamentoTextual.gravarStringEmArquivo((pre.retirarExcessoDeEspacos(strTodas)).strip(), arqTodas)
+        processamentoTextual.gravarStringEmArquivo((pre.retirarExcessoDeEspacos(strAnamnese)).strip(), arqAnamnese)
+        processamentoTextual.gravarStringEmArquivo((pre.retirarExcessoDeEspacos(strEvolucao)).strip(), arqEvolucao)
 
     # def trataNgrams(self):
     #     """[summary]
