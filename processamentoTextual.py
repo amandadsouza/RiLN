@@ -2,6 +2,7 @@ import os
 import constantes
 from os import path
 from wordcloud import WordCloud
+from processamentoComBD import BD
 
 def repeteString(texto, n):
     """ Repete uma string n vezes e retorna sua concatenacao em nova string
@@ -54,4 +55,17 @@ def gerarNuvemDePalavras(nomeArq, nomePng):
     # plt.imshow(wordcloud, interpolation="bilinear")
     # plt.axis("off")
     # plt.show()
+
+def gerarListaTermosRepetidos():
+    """ Percorre o banco de dados e gera uma lista de termos repetidos
+        Os termos unicos serao aqueles com apenas uma ocorrencia 
+    """    
+    banco = BD(constantes.BD_SQL_RESPOSTAS)
+    with banco:
+        tipoResposta = ['TODAS', 'ANAMNESE', 'EVOLUCAO']
+        for tipo in tipoResposta:
+            tabela = banco.listarRespostas(tipo)
+            for linha in tabela:
+
+
 
