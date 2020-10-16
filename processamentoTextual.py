@@ -56,16 +56,3 @@ def gerarNuvemDePalavras(nomeArq, nomePng):
     # plt.axis("off")
     # plt.show()
 
-def gerarListaTermosRepetidos():
-    """ Percorre o banco de dados e gera uma lista de termos repetidos
-        Os termos unicos serao aqueles com apenas uma ocorrencia 
-    """    
-    banco = BD(constantes.BD_SQL_RESPOSTAS)
-    with banco:
-        tipoResposta = ['TODAS', 'ANAMNESE', 'EVOLUCAO']
-        for tipo in tipoResposta:
-            tabela = banco.listarRespostas(tipo)
-            for linha in tabela:
-
-
-
