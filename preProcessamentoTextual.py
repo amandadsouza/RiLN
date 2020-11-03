@@ -110,24 +110,34 @@ def tokenizeString(text):
     tokens = tokenizer.tokenize(text)
     return tokens   
 
-def carregarCIDcomoArray():
-    """ Le o arquivo texto com as siglas da CID e gera um array em minusculas 
-
-    Returns:
-        list -- Siglas da CID em minusculas 
-    """    
-    with open(constantes.ARQ_CID, 'r') as file:
-        lista = file.read().splitlines()
-        listaMinuscula = [x.lower() for x in lista]
-        return listaMinuscula
-
-def carregarSiglasComoArray():
-    """ Le o arquivo com siglas tecnicas e gera um array em minusculas
+def carregarArquivoComoArray(arq):
+    """ Le o arquivo e gera um array em minusculas e sem espaços nas bordas
 
     Returns:
         list -- Siglas tecnicas em minusculas 
     """    
-    lista = open(constantes.ARQ_SIGLAS, 'r').read().splitlines()
-    listaMinuscula = [x.lower() for x in lista] 
+    lista = open(arq, 'r').read().splitlines()
+    listaMinuscula = [x.lower().strip() for x in lista] 
     return listaMinuscula
 
+def repeteString(texto, n):
+    """ Repete uma string n vezes e retorna sua concatenacao em nova string
+
+    Args:
+        texto (str): texto a ser repetido
+        n (int): numero de vezes a ser repetida
+
+    Returns:
+        str: nova string com o numero de repeticao
+    """    
+    return ' '.join([texto for i in range(n)])
+
+def gravarStringEmArquivo(texto, nomeArq):
+    """ Grava variavel string em arquivo texto
+
+    Args:
+        texto (str): string a ser gravada em arquivo 
+        nomeArq (str): nome do arquivo com path
+    """    
+    with open(nomeArq, 'w', encoding="utf-8") as text_file:
+        text_file.write(texto)

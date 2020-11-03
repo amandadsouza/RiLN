@@ -1,30 +1,11 @@
 import os
 import constantes
-from os import path
-from wordcloud import WordCloud
-from processamentoComBD import BD
+import preProcessamentoTextual as pre 
+from processamentoComBD import BD 
+from os import path 
+from wordcloud import WordCloud 
+from openpyxl import Workbook 
 
-def repeteString(texto, n):
-    """ Repete uma string n vezes e retorna sua concatenacao em nova string
-
-    Args:
-        texto (str): texto a ser repetido
-        n (int): numero de vezes a ser repetida
-
-    Returns:
-        str: nova string com o numero de repeticao
-    """    
-    return ' '.join([texto for i in range(n)])
-
-def gravarStringEmArquivo(texto, nomeArq):
-    """ Grava variavel string em arquivo texto
-
-    Args:
-        texto (str): string a ser gravada em arquivo 
-        nomeArq (str): nome do arquivo com path
-    """    
-    with open(nomeArq, 'w', encoding="utf-8") as text_file:
-        text_file.write(texto)
 
 def gerarNuvemDePalavras(nomeArq, nomePng):
     """ Gera imagem com nuvem de palavras baseado em arquivo texto 
@@ -56,3 +37,36 @@ def gerarNuvemDePalavras(nomeArq, nomePng):
     # plt.axis("off")
     # plt.show()
 
+def processarSinaisSintomas():
+    wb = Workbook() 
+    ws0 = wb.active 
+    ws0.title = 'TODAS' 
+    ws1 = wb.create_sheet(title='ANAMNESE') 
+    ws2 = wb.create_sheet(title='EVOLUCAO') 
+    arq = constantes.PATH_RESULTADOS + 'sinais-sintomas.xlsx' 
+    colecao = {} 
+    tipoResposta = ['TODAS', 'ANAMNESE', 'EVOLUCAO'] 
+    siglas = pre.carregarArquivoComoArray(constantes.ARQ_SINAIS_SINTOMAS) 
+    for tipo in tipoResposta: 
+        banco = BD(constantes.BD_SQL_RESPOSTAS)
+        with banco:
+            tabela = banco.listarRespostas(tipo) 
+            for linha in tabela:
+                if (linha[9]):
+                    for sigla in siglas:
+                        if sigla in linha[9]:
+                            if sigla in colecao:
+                                valor = colecao.get(sigla)
+                                colecao[sigla] = valor + 1
+                            else:
+                                colecao[sigla] = 1
+            for item in colecao:
+                if tipoResposta.index(tipo) == 0:
+                    ws0.append([item, colecao[item]]) 
+                elif tipoResposta.index(tipo) == 1:
+                    ws1.append([item, colecao[item]]) 
+                elif tipoResposta.index(tipo) == 2:
+                    ws2.append([item, colecao[item]]) 
+            colecao.clear()
+            wb.save(arq)
+    print("Arquivo salvo: " + arq)

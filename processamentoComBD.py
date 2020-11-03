@@ -1,13 +1,12 @@
-import sqlite3
-import preProcessamentoTextual as pre
-import processamentoTextual 
+import sqlite3 
 import nltk as nltk 
-from operator import itemgetter
-from collections import OrderedDict
-import constantes
-import json
-import csv
-from openpyxl import Workbook
+from operator import itemgetter 
+from collections import OrderedDict 
+import constantes 
+import json 
+import csv 
+from openpyxl import Workbook 
+import preProcessamentoTextual as pre 
 
 class BD:
 
@@ -198,20 +197,20 @@ class BD:
                 quant =  colecao.get(item)
                 if tipoResposta.index(tipo) == 0:
                     ws0.append([item, quant])
-                    strTodas += ' '+processamentoTextual.repeteString(item, quant)
+                    strTodas += ' '+ pre.repeteString(item, quant)
                 elif tipoResposta.index(tipo) == 1:
                     ws1.append([item, quant])
-                    strAnamnese += ' '+processamentoTextual.repeteString(item, quant)
+                    strAnamnese += ' '+ pre.repeteString(item, quant)
                 elif tipoResposta.index(tipo) == 2:
                     ws2.append([item, quant])
-                    strEvolucao += ' '+processamentoTextual.repeteString(item, quant)
+                    strEvolucao += ' '+ pre.repeteString(item, quant)
             
             colecao.clear()
             tabela.clear()
         wb.save(arq)
-        processamentoTextual.gravarStringEmArquivo((pre.retirarExcessoDeEspacos(strTodas)).strip(), arqTodas)
-        processamentoTextual.gravarStringEmArquivo((pre.retirarExcessoDeEspacos(strAnamnese)).strip(), arqAnamnese)
-        processamentoTextual.gravarStringEmArquivo((pre.retirarExcessoDeEspacos(strEvolucao)).strip(), arqEvolucao)
+        pre.gravarStringEmArquivo((pre.retirarExcessoDeEspacos(strTodas)).strip(), arqTodas)
+        pre.gravarStringEmArquivo((pre.retirarExcessoDeEspacos(strAnamnese)).strip(), arqAnamnese)
+        pre.gravarStringEmArquivo((pre.retirarExcessoDeEspacos(strEvolucao)).strip(), arqEvolucao)
 
     # def trataNgrams(self):
     #     """[summary]
@@ -230,6 +229,7 @@ class BD:
             e realiza uma soma da presenca de cada token para uma visao geral dos termos mais usados
             dois arquivos sao gerados como saida .txt e .csv 
         """ 
+        print("Função countUniGramForArq") 
         colecao = {}
         tipoResposta = ['TODAS', 'ANAMNESE', 'EVOLUCAO']
         for tipo in tipoResposta:
@@ -238,19 +238,21 @@ class BD:
                 if (linha[9]):
                     tokens = pre.tokenizeString(linha[9])
                     for token in tokens:
-                        if token in colecao:
-                            valor = colecao.get(token)
-                            colecao[token] = valor + 1
-                        else:
-                            colecao[token] = 1 
+                        if not token.isnumeric():
+                            if token in colecao:
+                                valor = colecao.get(token)
+                                colecao[token] = valor + 1
+                            else:
+                                colecao[token] = 1 
             colecaoOrdenada = ""
             colecaoOrdenada = OrderedDict(sorted(colecao.items(), key=itemgetter(1)))
             with open(constantes.PATH_RESULTADOS+'uniGramas-'+tipo+'.csv', 'w') as f:
                 writer = csv.writer(f)
                 for chave, valor in colecaoOrdenada.items():
                     writer.writerow([chave, valor])
-            arquivo = open(constantes.PATH_RESULTADOS+'uniGramas-'+tipo+'.txt', 'w')
+            arquivo = open(constantes.PATH_RESULTADOS+'uniGramas-'+tipo+'.json', 'w') 
             json.dump(colecaoOrdenada, arquivo, ensure_ascii=False)
+            print(constantes.PATH_RESULTADOS+'uniGramas-'+tipo+'.json')
             colecao.clear()
             arquivo.close()
 
@@ -262,7 +264,7 @@ class BD:
         """ 
         colecao = {} 
         tipoResposta = ['TODAS', 'ANAMNESE', 'EVOLUCAO']
-        cid = pre.carregarCIDcomoArray()
+        cid = pre.carregarArquivoComoArray(constantes.ARQ_CID)
         for tipo in tipoResposta:
             tabela = self.listarRespostas(tipo) 
             for linha in tabela:
@@ -292,7 +294,7 @@ class BD:
             grava o resultado em um campo (coluna) no banco de dados quantCID 
         """        
         tabela = self.listarRespostas('TODAS')
-        cid = pre.carregarCIDcomoArray()
+        cid = pre.carregarArquivoComoArray(constantes.ARQ_CID)
         for linha in tabela:
             quantCid = 0
             if (linha[9]):
@@ -307,7 +309,7 @@ class BD:
         """        
         colecao = {} 
         tipoResposta = ['TODAS', 'ANAMNESE', 'EVOLUCAO']
-        siglas = pre.carregarSiglasComoArray()
+        siglas = pre.carregarArquivoComoArray(constantes.ARQ_SIGLAS)
         for tipo in tipoResposta:
             tabela = self.listarRespostas(tipo) 
             for linha in tabela:
@@ -332,7 +334,8 @@ class BD:
             arquivo.close()
 
     def processaBigramas(self):
-        """[summary]
+        """ Identifica e conta os bigramas. 
+            Segmenta por Anamnese, Evolucao e Todos. 
         """        
         # processa toda a tabela 
         wb = Workbook()
