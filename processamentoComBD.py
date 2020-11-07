@@ -1,7 +1,6 @@
 import sqlite3 
 import nltk as nltk 
 from operator import itemgetter 
-from collections import OrderedDict 
 import constantes 
 import json 
 import csv 
@@ -224,37 +223,6 @@ class BD:
     #             print(bigrama)
     #         exit()
 
-    def countUniGramForArq(self):
-        """ Percorre toda a tabela e identifica quais os tokens estao presentes em cada registro, 
-            e realiza uma soma da presenca de cada token para uma visao geral dos termos mais usados
-            dois arquivos sao gerados como saida .txt e .csv 
-        """ 
-        print("Função countUniGramForArq") 
-        colecao = {}
-        tipoResposta = ['TODAS', 'ANAMNESE', 'EVOLUCAO']
-        for tipo in tipoResposta:
-            tabela = self.listarRespostas(tipo)
-            for linha in tabela:
-                if (linha[9]):
-                    tokens = pre.tokenizeString(linha[9])
-                    for token in tokens:
-                        if not token.isnumeric():
-                            if token in colecao:
-                                valor = colecao.get(token)
-                                colecao[token] = valor + 1
-                            else:
-                                colecao[token] = 1 
-            colecaoOrdenada = ""
-            colecaoOrdenada = OrderedDict(sorted(colecao.items(), key=itemgetter(1)))
-            with open(constantes.PATH_RESULTADOS+'uniGramas-'+tipo+'.csv', 'w') as f:
-                writer = csv.writer(f)
-                for chave, valor in colecaoOrdenada.items():
-                    writer.writerow([chave, valor])
-            arquivo = open(constantes.PATH_RESULTADOS+'uniGramas-'+tipo+'.json', 'w') 
-            json.dump(colecaoOrdenada, arquivo, ensure_ascii=False)
-            print(constantes.PATH_RESULTADOS+'uniGramas-'+tipo+'.json')
-            colecao.clear()
-            arquivo.close()
 
     def countCIDForArq(self):
         """ Percorre a tabela dependendo do criterio e identifica quais os codigos CID estao presentes em cada registro, 

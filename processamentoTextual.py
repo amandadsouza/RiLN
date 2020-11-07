@@ -1,6 +1,8 @@
 import os
 import constantes
 import preProcessamentoTextual as pre 
+import json 
+
 from processamentoComBD import BD 
 from os import path 
 from wordcloud import WordCloud 
@@ -38,12 +40,15 @@ def gerarNuvemDePalavras(nomeArq, nomePng):
     # plt.show()
 
 def processarSinaisSintomas():
+    """ Lista e quantidade de sinais e sintomas 
+        Saida: Sinais-sintomas.xlsx 
+    """    
     wb = Workbook() 
     ws0 = wb.active 
     ws0.title = 'TODAS' 
     ws1 = wb.create_sheet(title='ANAMNESE') 
     ws2 = wb.create_sheet(title='EVOLUCAO') 
-    arq = constantes.PATH_RESULTADOS + 'sinais-sintomas.xlsx' 
+    arq = constantes.PATH_RESULTADOS + 'Sinais-sintomas.xlsx' 
     colecao = {} 
     tipoResposta = ['TODAS', 'ANAMNESE', 'EVOLUCAO'] 
     siglas = pre.carregarArquivoComoArray(constantes.ARQ_SINAIS_SINTOMAS) 
@@ -70,3 +75,40 @@ def processarSinaisSintomas():
             colecao.clear()
             wb.save(arq)
     print("Arquivo salvo: " + arq)
+
+def processarUniGramas():
+    """ Percorre toda a tabela e identifica quais os tokens estao presentes em cada registro, 
+        e realiza uma soma da presenca de cada token para uma visao geral dos termos mais usados
+        Saida: 'UniGramas.xlsx' 
+    """ 
+    wb = Workbook() 
+    ws0 = wb.active 
+    ws0.title = 'TODAS' 
+    ws1 = wb.create_sheet(title='ANAMNESE') 
+    ws2 = wb.create_sheet(title='EVOLUCAO') 
+    arq = constantes.PATH_RESULTADOS + 'UniGramas.xlsx' 
+    colecao = {}
+    tipoResposta = ['TODAS', 'ANAMNESE', 'EVOLUCAO']
+    for tipo in tipoResposta:
+        banco = BD(constantes.BD_SQL_RESPOSTAS)
+        with banco:
+            tabela = banco.listarRespostas(tipo)
+            for linha in tabela:
+                if (linha[9]):
+                    tokens = pre.tokenizeString(linha[9])
+                    for token in tokens:
+                        if not pre.possuiDigitoNumerico(token):
+                            if token in colecao:
+                                valor = colecao.get(token)
+                                colecao[token] = valor + 1
+                            else:
+                                colecao[token] = 1 
+        for chave, valor in colecao.items():
+            if tipoResposta.index(tipo) == 0:
+                ws0.append([chave, valor]) 
+            elif tipoResposta.index(tipo) == 1:
+                ws1.append([chave, valor]) 
+            elif tipoResposta.index(tipo) == 2:
+                ws2.append([chave, valor]) 
+        colecao.clear()
+        wb.save(arq)

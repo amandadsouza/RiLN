@@ -141,3 +141,17 @@ def gravarStringEmArquivo(texto, nomeArq):
     """    
     with open(nomeArq, 'w', encoding="utf-8") as text_file:
         text_file.write(texto)
+
+def possuiDigitoNumerico(texto):
+    """ Verifica cada caracter do texto e identifica se eh digito numerico
+
+    Args:
+        texto (str): Texto a ser verificado
+
+    Returns:
+        Boolean: Verdadeiro se ha algum digito numerico ou Falso 
+    """    
+    for caracter in texto:
+        if caracter.isdigit():
+            return True
+    return False
