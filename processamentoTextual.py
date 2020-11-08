@@ -87,7 +87,10 @@ def processarUniGramas():
     ws1 = wb.create_sheet(title='ANAMNESE') 
     ws2 = wb.create_sheet(title='EVOLUCAO') 
     arq = constantes.PATH_RESULTADOS + 'UniGramas.xlsx' 
-    colecao = {}
+    colecao = {} 
+    stopWords = pre.stopWords
+    siglas = pre.carregarArquivoComoArray(constantes.ARQ_SIGLAS)
+    sinaisSintomas = pre.carregarArquivoComoArray(constantes.ARQ_SINAIS_SINTOMAS)
     tipoResposta = ['TODAS', 'ANAMNESE', 'EVOLUCAO']
     for tipo in tipoResposta:
         banco = BD(constantes.BD_SQL_RESPOSTAS)
@@ -97,7 +100,7 @@ def processarUniGramas():
                 if (linha[9]):
                     tokens = pre.tokenizeString(linha[9])
                     for token in tokens:
-                        if not pre.possuiDigitoNumerico(token):
+                        if (not pre.possuiDigitoNumerico(token)) and (token not in stopWords) and (token not in siglas) and (token not in sinaisSintomas):
                             if token in colecao:
                                 valor = colecao.get(token)
                                 colecao[token] = valor + 1
