@@ -24,5 +24,13 @@ if __name__ == "__main__":
         # pText.gerarNuvemDePalavras(constantes.PATH_RESULTADOS + 'stopWords-ParaNuvem-Evolucao.txt', 'stopWords-ParaNuvem-Evolucao.png')
 
         #pText.processarSinaisSintomas() 
-        pText.processarUniGramas() 
-        
+        # pText.gerarNuvemDePalavras(constantes.PATH_RESULTADOS + 'sinaisSintomas-ParaNuvem-Todas.txt', 'sinaisSintomas-ParaNuvem-Todas.png')
+        # pText.gerarNuvemDePalavras(constantes.PATH_RESULTADOS + 'sinaisSintomas-ParaNuvem-Anamnese.txt', 'sinaisSintomas-ParaNuvem-Anamnese.png')
+        # pText.gerarNuvemDePalavras(constantes.PATH_RESULTADOS + 'sinaisSintomas-ParaNuvem-Evolucao.txt', 'sinaisSintomas-ParaNuvem-Evolucao.png')
+
+        #pText.processarUniGramas() 
+        #pText.processarTerminologia(constantes.ARQ_TERMINOLOGIAS_AFIRMATIVAS, "Terminologias-Afirmativas.xlsx")
+        #pText.processarTerminologia(constantes.ARQ_TERMINOLOGIAS_NEGATIVAS, "Terminologias-Negativas.xlsx")
+
+        pText.processarTerminologiaComNGramas(constantes.ARQ_TERMINOLOGIAS_AFIRMATIVAS, "Terminologias-Afirmativas-nGram.xlsx", 3)
+        pText.processarTerminologiaComNGramas(constantes.ARQ_TERMINOLOGIAS_NEGATIVAS, "Terminologias-Negativas-nGram.xlsx", 3)
