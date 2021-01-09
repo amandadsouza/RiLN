@@ -14,8 +14,8 @@ if __name__ == "__main__":
         #banco.countCIDForBD()
         #banco.countSiglaForTxt()
 
-        #banco.processaBigramas()
-        #banco.processaTrigramas() 
+        #pText.processaBigramas()
+        #pText.processaTrigramas() 
         #banco.exportarBancoDeDados()
 
         # pText.gerarNuvemDePalavras('texto.txt', 'stop.png')
@@ -32,5 +32,15 @@ if __name__ == "__main__":
         #pText.processarTerminologia(constantes.ARQ_TERMINOLOGIAS_AFIRMATIVAS, "Terminologias-Afirmativas.xlsx")
         #pText.processarTerminologia(constantes.ARQ_TERMINOLOGIAS_NEGATIVAS, "Terminologias-Negativas.xlsx")
 
-        pText.processarTerminologiaComNGramas(constantes.ARQ_TERMINOLOGIAS_AFIRMATIVAS, "Terminologias-Afirmativas-nGram.xlsx", 3)
-        pText.processarTerminologiaComNGramas(constantes.ARQ_TERMINOLOGIAS_NEGATIVAS, "Terminologias-Negativas-nGram.xlsx", 3)
+        # pText.processarTerminologiaComNGramas(constantes.ARQ_TERMINOLOGIAS_AFIRMATIVAS, "Terminologias-Afirmativas-nGram-5.xlsx", 5)
+        # pText.processarTerminologiaComNGramas(constantes.ARQ_TERMINOLOGIAS_NEGATIVAS, "Terminologias-Negativas-nGram-5.xlsx", 5)
+        
+        # dicionario = pText.carregaDicionarioComMinimoDeItens(constantes.PATH_RESULTADOS+"bigramas-dict-Anamnese.pickle", 10)
+        # pText.gerarNuvemDePalavrasPorDicionario(dicionario, "bigramas-dict-Anamnese.png") 
+        # dicionario = pText.carregaDicionarioComMinimoDeItens(constantes.PATH_RESULTADOS+"bigramas-dict-Evolucao.pickle", 10)
+        # pText.gerarNuvemDePalavrasPorDicionario(dicionario, "bigramas-dict-Evolucao.png") 
+
+        dicionario = pText.carregaDicionarioComMinimoDeItens(constantes.PATH_RESULTADOS+"trigramas-dict-Anamnese.pickle", 10)
+        pText.gerarNuvemDePalavrasPorDicionario(dicionario, "trigramas-dict-Anamnese.png") 
+        dicionario = pText.carregaDicionarioComMinimoDeItens(constantes.PATH_RESULTADOS+"trigramas-dict-Evolucao.pickle", 10)
+        pText.gerarNuvemDePalavrasPorDicionario(dicionario, "trigramas-dict-Evolucao.png") 

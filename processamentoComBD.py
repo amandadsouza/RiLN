@@ -1,5 +1,4 @@
 import sqlite3 
-import nltk as nltk 
 from operator import itemgetter 
 import constantes 
 import json 
@@ -211,19 +210,6 @@ class BD:
         pre.gravarStringEmArquivo((pre.retirarExcessoDeEspacos(strAnamnese)).strip(), arqAnamnese)
         pre.gravarStringEmArquivo((pre.retirarExcessoDeEspacos(strEvolucao)).strip(), arqEvolucao)
 
-    # def trataNgrams(self):
-    #     """[summary]
-    #     """        
-    #     dados = self.listarRespostas()
-    #     for linha in dados:
-    #         print(linha[9])
-    #         if (linha[9] is not None):
-    #             fraseTokenizada = nltk.word_tokenize(linha[9])
-    #             bigrama = nltk.bigrams(fraseTokenizada)
-    #             print(bigrama)
-    #         exit()
-
-
     def countCIDForArq(self):
         """ Percorre a tabela dependendo do criterio e identifica quais os codigos CID estao presentes em cada registro, 
             realiza uma soma da presenca dos codigos para uma visao estatistica dos mais usados de acordo com o filtro do criterio
@@ -300,95 +286,6 @@ class BD:
             json.dump(colecaoOrdenada, arquivo, ensure_ascii=False, indent=4)
             colecao.clear()
             arquivo.close()
-
-    def processaBigramas(self):
-        """ Identifica e conta os bigramas. 
-            Segmenta por Anamnese, Evolucao e Todos. 
-        """        
-        # processa toda a tabela 
-        wb = Workbook()
-        ws0 = wb.active
-        ws0.title = 'bigramas-TODAS'
-        ws1 = wb.create_sheet(title='bigramas-ANAMNESE')
-        ws2 = wb.create_sheet(title='bigramas-EVOLUCAO')
-        arq = 'bigramas.xlsx' 
-        listaTodosBigramas = []
-        tipoResposta = ['ANAMNESE', 'EVOLUCAO']
-        for tipo in tipoResposta:
-            tabela = self.listarRespostas(tipo)
-            for linha in tabela:
-                #rowId = linha[0]
-                #texto = ''
-                if (linha[9]):
-                    tokens = pre.tokenizeString(linha[9])
-                    bigramas = list(nltk.bigrams(tokens))
-                    listaTodosBigramas += bigramas
-                    #tamBigramas = len(bigramas)
-                    #for item in bigramas:
-                    #    texto += '(' + item[0] + ' , ' + item[1] + ') | ' 
-                    #self.gravarBigramasNoBD(rowId, texto, tamBigramas)
-                    bigramas.clear()
-            for item in listaTodosBigramas:
-                cont = 0
-                for bigrama in listaTodosBigramas:
-                    if (item == bigrama):
-                        cont += 1
-                print(item, cont)
-                # excluir para diminuir a lista
-                while (item in listaTodosBigramas):
-                    listaTodosBigramas.remove(item)
-
-                # gravar contador 
-                if tipoResposta.index(tipo) == 0: 
-                    ws1.append([','.join(item), cont]) 
-                else: 
-                    ws2.append([','.join(item), cont]) 
-            listaTodosBigramas.clear()
-            wb.save(arq)
-
-    def processaTrigramas(self):
-        """ Percorre os textos e identifica os trigramas para geracao de planilha para analise
-        """        
-        # processa toda a tabela 
-        wb = Workbook()
-        ws1 = wb.create_sheet(title='trigramas-ANAMNESE')
-        ws2 = wb.create_sheet(title='trigramas-EVOLUCAO')
-        arq = 'trigramas.xlsx' 
-        listaTodosTrigramas = [] 
-        tipoResposta = ['ANAMNESE', 'EVOLUCAO']
-        for tipo in tipoResposta:
-            tabela = self.listarRespostas(tipo)
-            for linha in tabela:
-                rowId = linha[0]
-                texto = ''
-                if (linha[9]):
-                    tokens = pre.tokenizeString(linha[9])
-                    trigramas = list(nltk.trigrams(tokens))
-                    listaTodosTrigramas += trigramas
-                    tamtrigramas = len(trigramas)
-                    for item in trigramas:
-                       texto += '(' + item[0] + ' , ' + item[1] + ') | ' 
-                    self.gravarTrigramasNoBD(rowId, texto, tamtrigramas)
-                    trigramas.clear()
-            for item in listaTodosTrigramas:
-                cont = 0
-                for trigrama in listaTodosTrigramas:
-                    if (item == trigrama):
-                        cont += 1
-                print(item, cont)
-                # excluir para diminuir a lista
-                while (item in listaTodosTrigramas):
-                    listaTodosTrigramas.remove(item)
-
-                # gravar contador 
-                if tipoResposta.index(tipo) == 0: 
-                    ws1.append([','.join(item), cont]) 
-                else: 
-                    ws2.append([','.join(item), cont]) 
-            listaTodosTrigramas.clear()
-            wb.save(arq)
-            print("Iteração salva")
-
 
 if __name__ == "__main__":
     pass
