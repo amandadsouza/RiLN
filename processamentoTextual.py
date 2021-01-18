@@ -5,8 +5,9 @@ import json
 import matplotlib.pyplot as plt
 import nltk as nltk 
 import pickle
+import re 
 from processamentoComBD import BD 
-from os import path 
+from os import path, remove 
 from wordcloud import WordCloud 
 from openpyxl import Workbook 
 
@@ -106,6 +107,33 @@ def processarSinaisSintomas():
     pre.gravarStringEmArquivo((pre.retirarExcessoDeEspacos(strAnamnese)).strip(), arqAnamnese)
     pre.gravarStringEmArquivo((pre.retirarExcessoDeEspacos(strEvolucao)).strip(), arqEvolucao)
 
+def processarSinaisSintomasPorTermosProximos(QuantTermosProxs):
+    """ Lista e quantidade de sinais e sintomas 
+        Saida: Sinais-sintomas.xlsx 
+    """    
+    wb = Workbook() 
+    arq = constantes.PATH_RESULTADOS + 'Sinais-sintomasTermosProximos'+str(QuantTermosProxs)+'.xlsx' 
+    tipoResposta = ['ANAMNESE', 'EVOLUCAO'] 
+    sinais = pre.carregarArquivoComoArray(constantes.ARQ_SINAIS_SINTOMAS) 
+    for tipo in tipoResposta: 
+        banco = BD(constantes.BD_SQL_RESPOSTAS)
+        with banco:
+            tabela = banco.listarRespostas(tipo) 
+            for sinal in sinais:
+                nomePlan = wb.create_sheet(sinal+"-"+tipo) 
+                gravar = False
+                for linha in tabela:
+                    if (linha[9]):                     
+                        if sinal in linha[9]:
+                            termosProximos = re.finditer('(\\S+\\s+){'+str(QuantTermosProxs)+"}(?="+sinal+")", linha[9]) 
+                            for t in termosProximos:
+                                print(t.group()+sinal)
+                                nomePlan.append([t.group()+sinal]) 
+                                gravar = True
+                if (gravar == False):
+                    wb.remove_sheet(nomePlan)
+                wb.save(arq) 
+
 def processarUniGramas():
     """ Percorre toda a tabela e identifica quais os tokens estao presentes em cada registro, 
         e realiza uma soma da presenca de cada token para uma visao geral dos termos mais usados
@@ -116,7 +144,7 @@ def processarUniGramas():
     ws0.title = 'TODAS' 
     ws1 = wb.create_sheet(title='ANAMNESE') 
     ws2 = wb.create_sheet(title='EVOLUCAO') 
-    arq = constantes.PATH_RESULTADOS + 'UniGramas.xlsx' 
+    arq = constantes.PATH_RESULTADOS + 'UniGramasSemFiltro.xlsx' 
     colecao = {} 
     stopWords = pre.stopWords
     siglas = pre.carregarArquivoComoArray(constantes.ARQ_SIGLAS)

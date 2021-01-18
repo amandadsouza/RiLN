@@ -14,6 +14,7 @@ if __name__ == "__main__":
         #banco.countCIDForBD()
         #banco.countSiglaForTxt()
 
+        # pText.processarUniGramas() 
         #pText.processaBigramas()
         #pText.processaTrigramas() 
         #banco.exportarBancoDeDados()
@@ -23,7 +24,7 @@ if __name__ == "__main__":
         # pText.gerarNuvemDePalavras(constantes.PATH_RESULTADOS + 'stopWords-ParaNuvem-Anamnese.txt', 'stopWords-ParaNuvem-Anamnese.png')
         # pText.gerarNuvemDePalavras(constantes.PATH_RESULTADOS + 'stopWords-ParaNuvem-Evolucao.txt', 'stopWords-ParaNuvem-Evolucao.png')
 
-        #pText.processarSinaisSintomas() 
+        # pText.processarSinaisSintomas() 
         # pText.gerarNuvemDePalavras(constantes.PATH_RESULTADOS + 'sinaisSintomas-ParaNuvem-Todas.txt', 'sinaisSintomas-ParaNuvem-Todas.png')
         # pText.gerarNuvemDePalavras(constantes.PATH_RESULTADOS + 'sinaisSintomas-ParaNuvem-Anamnese.txt', 'sinaisSintomas-ParaNuvem-Anamnese.png')
         # pText.gerarNuvemDePalavras(constantes.PATH_RESULTADOS + 'sinaisSintomas-ParaNuvem-Evolucao.txt', 'sinaisSintomas-ParaNuvem-Evolucao.png')
@@ -40,7 +41,10 @@ if __name__ == "__main__":
         # dicionario = pText.carregaDicionarioComMinimoDeItens(constantes.PATH_RESULTADOS+"bigramas-dict-Evolucao.pickle", 10)
         # pText.gerarNuvemDePalavrasPorDicionario(dicionario, "bigramas-dict-Evolucao.png") 
 
-        dicionario = pText.carregaDicionarioComMinimoDeItens(constantes.PATH_RESULTADOS+"trigramas-dict-Anamnese.pickle", 10)
-        pText.gerarNuvemDePalavrasPorDicionario(dicionario, "trigramas-dict-Anamnese.png") 
-        dicionario = pText.carregaDicionarioComMinimoDeItens(constantes.PATH_RESULTADOS+"trigramas-dict-Evolucao.pickle", 10)
-        pText.gerarNuvemDePalavrasPorDicionario(dicionario, "trigramas-dict-Evolucao.png") 
+        # dicionario = pText.carregaDicionarioComMinimoDeItens(constantes.PATH_RESULTADOS+"trigramas-dict-Anamnese.pickle", 10)
+        # pText.gerarNuvemDePalavrasPorDicionario(dicionario, "trigramas-dict-Anamnese.png") 
+        # dicionario = pText.carregaDicionarioComMinimoDeItens(constantes.PATH_RESULTADOS+"trigramas-dict-Evolucao.pickle", 10)
+        # pText.gerarNuvemDePalavrasPorDicionario(dicionario, "trigramas-dict-Evolucao.png") 
+
+        # pText.processarSinaisSintomasPorTermosProximos(4)
+        
