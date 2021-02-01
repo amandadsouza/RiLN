@@ -301,7 +301,7 @@ def processarTerminologia(arqTerminologia, nomeArqSaida):
         baseado na lista de terminologia previamente selecionada 
     Args:
         arqTerminologia (str): Arquivo completo (com path) de qual terminologia usar (vide constantes)
-        nomeArqSaida ([type]): Nome do arquivo de saida a ser gravado no PATH_RESULTADOS 
+        nomeArqSaida (xlsx): Nome do arquivo de saida a ser gravado no PATH_RESULTADOS 
     """
     wb = Workbook() 
     ws0 = wb.active 
@@ -332,6 +332,15 @@ def processarTerminologia(arqTerminologia, nomeArqSaida):
                 ws1.append([chave, valor]) 
             elif tipoResposta.index(tipo) == 2:
                 ws2.append([chave, valor]) 
+
+        if tipoResposta.index(tipo) == 0:
+            arqJson = constantes.PATH_RESULTADOS + nomeArqSaida + "-todos.pickle" 
+        elif tipoResposta.index(tipo) == 1:
+            arqJson = constantes.PATH_RESULTADOS + nomeArqSaida + "-anamnese.pickle" 
+        else: 
+            arqJson = constantes.PATH_RESULTADOS + nomeArqSaida + "-evolucao.pickle" 
+        with open(arqJson, 'wb') as f:
+            pickle.dump(colecao, f)
         colecao.clear()
         wb.save(arq)
 
@@ -386,4 +395,3 @@ def processarTerminologiaComNGramas(arqTerminologia, nomeArqSaida, quantNGramas)
                 ws2.append([chave, valor]) 
         colecao.clear()
         wb.save(arq)
-

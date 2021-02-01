@@ -2,6 +2,7 @@
 from processamentoComBD import BD
 import constantes
 import processamentoTextual as pText 
+import preProcessamentoTextual as pre
 
 if __name__ == "__main__":
     banco = BD(constantes.BD_SQL_RESPOSTAS)
@@ -47,4 +48,12 @@ if __name__ == "__main__":
         # pText.gerarNuvemDePalavrasPorDicionario(dicionario, "trigramas-dict-Evolucao.png") 
 
         # pText.processarSinaisSintomasPorTermosProximos(4)
+
+        # pText.processarTerminologia(constantes.PATH_LISTAS + "Term-Diag-Jargao-para-Processamento.txt", "Term-Diag-Jargao-para-Processamento.xlsx")
+        # pText.processarTerminologia(constantes.PATH_LISTAS + "Term-Diag-CID-para-Processamento.txt", "Term-Diag-CID-para-Processamento.xlsx") 
+
+        # pText.processarTerminologia(constantes.PATH_LISTAS + "Diagnostico-final-para-processamento.txt", "Diagnostico-final-para-processamento.xlsx") 
+        # dicionario = pText.carregaDicionarioComMinimoDeItens(constantes.PATH_RESULTADOS+"Diagnostico-final-para-processamento.xlsx-todos.pickle", 5)
+        # pText.gerarNuvemDePalavrasPorDicionario(dicionario, "Diagnostico-final-para-processamento-todos.png") 
+        
         

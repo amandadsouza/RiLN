@@ -1,0 +1,2 @@
+# coding: latin-1
+# encoding: iso-8859-1
