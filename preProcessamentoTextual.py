@@ -119,7 +119,6 @@ def carregarArquivoComoArray(arq):
     """    
     lista = open(arq, 'r').read().splitlines()
     listaMinuscula = [x.lower().strip() for x in lista] 
-    conjunto = []
     for item in listaMinuscula:
         for letra in caracteresAcentuados:
             if letra in item:
