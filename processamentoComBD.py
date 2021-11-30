@@ -5,6 +5,7 @@ import json
 import csv 
 from openpyxl import Workbook 
 import preProcessamentoTextual as pre 
+import pickle
 
 class BD:
 
@@ -140,7 +141,8 @@ class BD:
         self.cursor.execute("""UPDATE respostas SET trigramas = ?, quantBigramas = ? WHERE rowid = ? """,(trigramas, tamanho, id, ))
 
     def trataStopWords(self, gravar):
-        """ Percorre toda a tabela e identifica cada token, para contar se eh stopword ou nao 
+        """ - Deprecated - 
+            Percorre toda a tabela e identifica cada token, para contar se eh stopword ou nao 
             ja grava as quantidades em cada registro no banco de dados.
             Deve se chamada uma vez com S para gravar os dados no proprio banco. 
             Depois pode-se chamar com N apenas para gerar a saida em XLS
@@ -203,6 +205,16 @@ class BD:
                     ws2.append([item, quant])
                     strEvolucao += ' '+ pre.repeteString(item, quant)
             
+            if tipoResposta.index(tipo) == 0:
+                arqJson = constantes.PATH_RESULTADOS + "SWords" + "-todos.pickle" 
+            elif tipoResposta.index(tipo) == 1:
+                arqJson = constantes.PATH_RESULTADOS + "SWords" + "-anamnese.pickle" 
+            else: 
+                arqJson = constantes.PATH_RESULTADOS + "SWords" + "-evolucao.pickle" 
+            
+            with open(arqJson, 'wb') as f:
+                pickle.dump(colecao, f)
+
             colecao.clear()
             tabela.clear()
         wb.save(arq)

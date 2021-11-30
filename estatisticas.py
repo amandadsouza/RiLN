@@ -2,12 +2,24 @@
 from processamentoComBD import BD
 import constantes
 import processamentoTextual as pText 
+import preProcessamentoTextual as pre
 
 if __name__ == "__main__":
     banco = BD(constantes.BD_SQL_RESPOSTAS)
     with banco:
-        #banco.trataStopWords('N')
-        #banco.separaStopWords()
+
+        # Stop Words
+        # pre.gerarListaEmArquivoDeStopWords()
+        # pText.processarTerminologia(constantes.PATH_LISTAS + 'ListaStopWords.txt', "Stop-Words.xlsx")
+
+        # banco.trataStopWords('N')
+        # banco.separaStopWords()
+        # dicionario = pText.carregaDicionarioComMinimoDeItens(constantes.PATH_RESULTADOS+"SWords-todos.pickle", 10)
+        # pText.gerarNuvemDePalavrasPorDicionario(dicionario, "SWords-todos.png") 
+        # dicionario = pText.carregaDicionarioComMinimoDeItens(constantes.PATH_RESULTADOS+"SWords-anamnese.pickle", 10)
+        # pText.gerarNuvemDePalavrasPorDicionario(dicionario, "SWords-anamnese.png") 
+        # dicionario = pText.carregaDicionarioComMinimoDeItens(constantes.PATH_RESULTADOS+"SWords-evolucao.pickle", 10)
+        # pText.gerarNuvemDePalavrasPorDicionario(dicionario, "SWords-evolucao.png") 
 
         #banco.countUniGramForArq()
         #banco.countCIDForArq()
@@ -80,13 +92,13 @@ if __name__ == "__main__":
         # pText.gerarNuvemDePalavrasPorDicionario(dicionario, "Diagnostico-final-para-processamento-final-v2-evolucao.png") 
 
         # Siglas 
-        # pText.processarTerminologia(constantes.ARQ_SIGLAS, "Siglas-Unicas_e_Repetidas-v2.xlsx")
-        # dicionario = pText.carregaDicionarioComMinimoDeItens(constantes.PATH_RESULTADOS+"Siglas-Unicas_e_Repetidas-v2.xlsx-todos.pickle", 10)
-        # pText.gerarNuvemDePalavrasPorDicionario(dicionario, "Siglas-Unicas_e_Repetidas-v2.xlsx-todos.png") 
-        # dicionario = pText.carregaDicionarioComMinimoDeItens(constantes.PATH_RESULTADOS+"Siglas-Unicas_e_Repetidas-v2.xlsx-anamnese.pickle", 10)
-        # pText.gerarNuvemDePalavrasPorDicionario(dicionario, "Siglas-Unicas_e_Repetidas-v2.xlsx-anamnese.png") 
-        # dicionario = pText.carregaDicionarioComMinimoDeItens(constantes.PATH_RESULTADOS+"Siglas-Unicas_e_Repetidas-v2.xlsx-evolucao.pickle", 10)
-        # pText.gerarNuvemDePalavrasPorDicionario(dicionario, "Siglas-Unicas_e_Repetidas-v2.xlsx-evolucao.png") 
+        # pText.processarTerminologia(constantes.ARQ_SIGLAS, "Siglas-Abrev.xlsx")
+        # dicionario = pText.carregaDicionarioComMinimoDeItens(constantes.PATH_RESULTADOS+"Siglas-Abrev.xlsx-todos.pickle", 10)
+        # pText.gerarNuvemDePalavrasPorDicionario(dicionario, "Siglas-Abrev.xlsx-todos.png") 
+        # dicionario = pText.carregaDicionarioComMinimoDeItens(constantes.PATH_RESULTADOS+"Siglas-Abrev.xlsx-anamnese.pickle", 10)
+        # pText.gerarNuvemDePalavrasPorDicionario(dicionario, "Siglas-Abrev.xlsx-anamnese.png") 
+        # dicionario = pText.carregaDicionarioComMinimoDeItens(constantes.PATH_RESULTADOS+"Siglas-Abrev.xlsx-evolucao.pickle", 10)
+        # pText.gerarNuvemDePalavrasPorDicionario(dicionario, "Siglas-Abrev.xlsx-evolucao.png") 
 
         # Sinais e sintomas
         # pText.processarTerminologia(constantes.ARQ_SINAIS_SINTOMAS, "terminologia_Sinais_Sintomas_FINAL.xlsx")
@@ -105,3 +117,12 @@ if __name__ == "__main__":
         # pText.gerarNuvemDePalavrasPorDicionario(dicionario, "Procedimentos.xlsx-anamnese.png") 
         # dicionario = pText.carregaDicionarioComMinimoDeItens(constantes.PATH_RESULTADOS+"Procedimentos.xlsx-evolucao.pickle", 2)
         # pText.gerarNuvemDePalavrasPorDicionario(dicionario, "Procedimentos.xlsx-evolucao.png") 
+
+        # CID
+        # pText.processarTerminologia(constantes.ARQ_CID, "CID.xlsx")
+        # dicionario = pText.carregaDicionarioComMinimoDeItens(constantes.PATH_RESULTADOS+"CID.xlsx-todos.pickle", 2)
+        # pText.gerarNuvemDePalavrasPorDicionario(dicionario, "CID.xlsx.png") 
+        # dicionario = pText.carregaDicionarioComMinimoDeItens(constantes.PATH_RESULTADOS+"CID.xlsx-anamnese.pickle", 2)
+        # pText.gerarNuvemDePalavrasPorDicionario(dicionario, "CID.xlsx-anamnese.png") 
+        # dicionario = pText.carregaDicionarioComMinimoDeItens(constantes.PATH_RESULTADOS+"CID.xlsx-evolucao.pickle", 2)
+        # pText.gerarNuvemDePalavrasPorDicionario(dicionario, "CID.xlsx-evolucao.png") 
