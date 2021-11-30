@@ -9,4 +9,17 @@ Markup : * Registros Eletrônicos de Saúde;
          * Terminologia; 
          * Processamento de Linguagem Natural.
 
+ Markup : * Bullet list
+              * Nested bullet
+                  * Sub-nested bullet etc
+          * Bullet list item 2
+
+-OR-
+
+ Markup : - Bullet list
+              - Nested bullet
+                  - Sub-nested bullet etc
+          - Bullet list item 2 
+
+
 <img src="./docs/Diagrama.png" alt="Principais processos">
